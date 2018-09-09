@@ -4,41 +4,67 @@ const Schema = mongoose.Schema;
 const boatsSchema = new Schema({
   boatName: { 
     type: String, 
+    index: true,
     required: true 
   },
-  maxCapacity: { 
+  boatID: { 
+    images: String, 
+    required: true 
+  },
+  maxPersons: { 
     type: Number,
     default: 0, 
     required: true 
   },
   maxWeight: { 
     type: Number,
-    required: false 
+    required: true 
   },
-  location: { 
-    type: String,
-    required: false 
-  },
-  boatSize: { 
+  length: { 
     type: Number,
     required: false 
   },
-  boatImages: { 
+  bridgeClearence: { 
+    type: Number,
+    required: false 
+  },
+  beam: { 
+    type: Number,
+    required: false 
+  },
+  propulsion: { 
+    type: String,
+    required: false 
+  },
+  images: { 
     images: [String],
     default: undefined, 
     required: false 
   },
-  boatCaptains: { 
+  captains: { 
     images: [String],
     default: undefined, 
+    required: false 
+  },
+  ownedBy: { 
+    images: [String],
+    default: undefined, 
+    required: false 
+  },
+  dockLocation: { 
+    type: String,
     required: false 
   },
   builtOnDate: { 
     type: Date,
     required: false
+  },
+  lastServiced: { 
+    type: Date,
+    required: false
   }
 });
 
-const Boats = mongoose.model("Boats", systemsSchema);
+const Boats = mongoose.model("Boats", boatsSchema);
 
 module.exports = Boats;

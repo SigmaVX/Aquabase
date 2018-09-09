@@ -1,6 +1,6 @@
 require("../models");
 
-// Defining methods for the Tilt's Tables' Controllers
+// Defining Methods For Tables'
 module.exports = {
   findAll: function (table, req, res) {
     table

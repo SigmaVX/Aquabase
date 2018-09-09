@@ -26,8 +26,8 @@ const PORT = process.env.PORT || 3001;
 // 
 // Add Database
 // =============================================================
-const MONGODB_LOCATION = process.env.MONGODB_URI || "mongodb://localhost/tilt";
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/tilt");
+const MONGODB_LOCATION = process.env.MONGODB_URI || "mongodb://localhost/aquabase";
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/aquabase");
 
 
 // Middleware
@@ -73,7 +73,6 @@ app.use(passport.session());
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
-
 
 // API Routes
 // =============================================================

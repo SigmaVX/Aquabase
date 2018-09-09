@@ -7,13 +7,17 @@ var LocalStrategy = require('passport-local').Strategy;
 let Schema = mongoose.Schema;
 
 let usersSchema = new Schema({
-  email: {
+  firstName: {
     type: String,
-    unique: true,
     required: true,
     trim: true
   },
-  username: {
+  lastName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  email: {
     type: String,
     unique: true,
     required: true,
@@ -21,11 +25,10 @@ let usersSchema = new Schema({
   },
   password: {
     type: String,
-    required: true,
+    trim: true
   },
   userType: {
     type: String,
-    default: "user",
     required: true,
   },
   addedOnDate: { 
