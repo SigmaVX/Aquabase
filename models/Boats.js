@@ -8,7 +8,7 @@ const boatsSchema = new Schema({
     required: true 
   },
   boatID: { 
-    images: String, 
+    type: String, 
     required: true 
   },
   maxPersons: { 
@@ -38,17 +38,17 @@ const boatsSchema = new Schema({
   },
   images: { 
     images: [String],
-    default: undefined, 
+    default: ["add-default-to-schema"], 
     required: false 
   },
   captains: { 
     images: [String],
-    default: undefined, 
+    default: ["add-default-to-schema"], 
     required: false 
   },
   ownedBy: { 
     images: [String],
-    default: undefined, 
+    default: ["add-default-to-schema"], 
     required: false 
   },
   dockLocation: { 

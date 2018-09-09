@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const dbController = require("../../../controllers/controller");
-const Systems = require("../../../models/Systems");
+const Systems = require("../../../models/Clients");
 
 // For "/api/systems"
 router

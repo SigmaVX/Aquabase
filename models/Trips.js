@@ -63,4 +63,4 @@ const tripsSchema = new Schema({
 
 const Trips = mongoose.model("Trips", tripsSchema);
 
-module.exports = Reports;
+module.exports = Trips;

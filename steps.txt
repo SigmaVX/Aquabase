@@ -1,0 +1,12 @@
+
+
+Back End
+-Add Models and Schema
+-Add Univeral Controlers
+-Add Univeral Routes
+-Add User Authentication
+-Test Routes
+
+Front End
+-Admin Portal
+-Conditional Routes

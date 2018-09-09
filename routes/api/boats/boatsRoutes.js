@@ -1,7 +1,7 @@
 
 const router = require("express").Router();
 const dbController = require("../../../controllers/controller");
-const Reports = require("../../../models/Reports");
+const Reports = require("../../../models/Boats");
 
 // For "/api/reports"
 router
