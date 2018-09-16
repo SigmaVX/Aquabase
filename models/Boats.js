@@ -37,20 +37,20 @@ const boatsSchema = new Schema({
     required: false 
   },
   images: { 
-    images: [String],
-    default: ["add-default-to-schema"], 
+    type: [String],
+    default: "add-default-to-schema", 
     required: false 
   },
   captains: { 
-    images: [String],
-    default: ["add-default-to-schema"], 
+    type: [String],
+    default: "add-default-to-schema", 
     required: false 
   },
-  ownedBy: { 
-    images: [String],
-    default: ["add-default-to-schema"], 
+  ownedBy: [{ 
+    type: String,
+    default: "add-default-to-schema", 
     required: false 
-  },
+  }],
   dockLocation: { 
     type: String,
     required: false 

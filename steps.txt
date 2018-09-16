@@ -1,9 +1,11 @@
 
 
 Back End
--Add Models and Schema
--Add Univeral Controlers
--Add Univeral Routes
+X-Build Server.js
+X-Add Dependencies
+X-Add Models and Schema
+X-Add Univeral Controlers
+X-Add Univeral Routes
 -Add User Authentication
 -Test Routes
 

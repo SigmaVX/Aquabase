@@ -1,18 +1,18 @@
 const router = require("express").Router();
 const dbController = require("../../../controllers/controller");
-const Users = require("../../../models/Trips");
+const Trips = require("../../../models/Trips");
 
-// For "/api/users"
+// For "/api/trips"
 router
   .route("/")
-  .get(function(req, res) {dbController.findAll(Users, req, res);})
-  .post(function(req, res) {dbController.create(Users, req, res);});
+  .get(function(req, res) {dbController.findAll(Trips, req, res);})
+  .post(function(req, res) {dbController.create(Trips, req, res);});
 
-// For "/api/users/:id"
+// For "/api/trips/:id"
 router
   .route("/:id")
-  .get(function(req, res) {dbController.findById(Users, req, res);})
-  .put(function(req, res) {dbController.update(Users, req, res);})
-  .delete(function(req, res) {dbController.remove(Users, req, res);});
+  .get(function(req, res) {dbController.findById(Trips, req, res);})
+  .put(function(req, res) {dbController.update(Trips, req, res);})
+  .delete(function(req, res) {dbController.remove(Trips, req, res);});
 
 module.exports = router;
