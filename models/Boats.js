@@ -46,11 +46,11 @@ const boatsSchema = new Schema({
     default: "add-default-to-schema", 
     required: false 
   },
-  ownedBy: [{ 
-    type: String,
+  ownedBy: { 
+    type: [String],
     default: "add-default-to-schema", 
     required: false 
-  }],
+  },
   dockLocation: { 
     type: String,
     required: false 
@@ -68,3 +68,22 @@ const boatsSchema = new Schema({
 const Boats = mongoose.model("Boats", boatsSchema);
 
 module.exports = Boats;
+
+// Inbound Data Should Be Sent As Follows:
+// boatName:boat name stuff
+// boatID:123
+// maxPersons:6
+// maxWeight:100
+// length:20
+// bridgeClearence:50
+// beam:75
+// propulsion:20
+// images:imgageone.jpg
+// images:imagetwo.jpg
+// captains:captin moe
+// captains:cap curly
+// ownedBy:joe
+// ownedBy:jack
+// dockLocation:calamazoo
+// builtOnDate:1-10-2010
+// lastServiced:2018-06-26T00:39:01.817Z

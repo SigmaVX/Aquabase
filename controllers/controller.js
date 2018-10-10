@@ -1,8 +1,9 @@
 require("../models");
 
 
-// Defining Methods For Tables'
-// Basic CRUD Method On Top & Custom CRUD Below
+// Defining Methods For Tables
+
+// Basic CRUD Methods 
 module.exports = {
   findAll: function (table, req, res) {
     table
@@ -19,7 +20,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   create: function (table, req, res) {
-    console.log("test ", req.body.images[1]);
+    console.log("test ", req.body);
     table
       .create(req.body)
       .then(dbModel => res.json(dbModel))
@@ -39,5 +40,9 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   }
+
+  // Custom CRUD
+
+
 };
 

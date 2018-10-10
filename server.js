@@ -11,6 +11,7 @@ const routes = require("./routes");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const logger = require("morgan");
+const flash = require("connect-flash");
 const	fs = require("fs");
 const path = require("path");
 var async = require('async');
@@ -47,6 +48,19 @@ app.use(bodyParser.json());
 // Use express-validator to check data before entering DB
 // Add options inside an array as a parameter if wanted
 app.use(expressValidator()); 
+
+// Connect Flash For Front End Messaging
+app.use(flash());
+
+// Set Global Variables For Flash Messaging
+// res.locals is a persistant object that can be accessed on the front end 
+// Note: res.locals.error is for Passport generated errors
+app.use(function(req, res,next){
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
+  res.locals.error = req.flash("error");
+
+});
 
 // To Read Cookies
 app.use(cookieParser());

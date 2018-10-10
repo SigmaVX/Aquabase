@@ -45,12 +45,15 @@ const clientsSchema = new Schema({
     type: String, 
     required: true
   },
+  // trips: [{ 
+  //   type: Array, 
+  //   default: [{
+  //     type: Schema.Types.ObjectId,
+  //     ref: 'Trips'
+  //   }],
   trips: { 
-    type: Array, 
-    default: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Trips'
-    }],
+    type: [Schema.Types.ObjectId],
+    ref: 'Trips',
     required: true
   }
 });
@@ -58,3 +61,18 @@ const clientsSchema = new Schema({
 const Clients = mongoose.model("Clients", clientsSchema);
 
 module.exports = Clients;
+
+
+  // Inbound Data Should Be Sent As Follows:
+  // {
+  //   "firstName": "Tony", 
+  //   "lastName": "Wible",
+  //   "addressOne": "8 Spring Hunter Ct",
+  //   "addressTwo": "",
+  //   "city": "Andover",
+  //   "state": "NJ",
+  //   "zipcode": "07821",
+  //   "email": "tony@123.com",
+  //   "clientPhone": "908 852 6107",
+  //   "trips": ["5ba12eb4439e0e541c7d2bec", "5ba12eb4439e0e541c7d2bec"]
+  // }

@@ -6,9 +6,18 @@ X-Add Dependencies
 X-Add Models and Schema
 X-Add Univeral Controlers
 X-Add Univeral Routes
+- Test if need Express Validator in Server JS since its in models
 -Add User Authentication
--Test Routes
+-Test User Authentication
+X -Test Routes
+    x - POST Boats
+    X - POST Users
+    X - POST Trips
+    X - POST Clients
 
 Front End
 -Admin Portal
 -Conditional Routes
+-Local weather API
+-Add image uplaod S3
+

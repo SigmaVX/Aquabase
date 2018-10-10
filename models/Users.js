@@ -10,11 +10,16 @@ let usersSchema = new Schema({
   firstName: {
     type: String,
     required: true,
-    trim: true
+    // trim: true
   },
   lastName: {
     type: String,
     required: true,
+    trim: true
+  },
+  phone:{
+    type: String,
+    required: false,
     trim: true
   },
   email: {
@@ -29,7 +34,7 @@ let usersSchema = new Schema({
   },
   userType: {
     type: String,
-    required: true,
+    default: "Crew",
   },
   addedOnDate: { 
     type: Date,
@@ -127,3 +132,13 @@ usersSchema.pre("save", function(next) {
 let Users = mongoose.model("Users", usersSchema);
 
 module.exports = Users;
+
+// Inbound Data Should Be Sent As Follows:
+// firstName:Tony
+// lastName:Wible
+// email:123@gmail.com
+// password:123
+// userType:admin
+// addedOnDate:10-10-2010
+// resetPasswordToken:123
+// resetPasswordExpires:10-10-2010
