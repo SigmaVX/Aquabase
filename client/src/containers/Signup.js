@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
+import ReactDOM from "react-dom";
 import AUTH from "../utilities/AUTH";
 import {ErrorUserName, ErrorPassword, ErrorEmail, ErrorPasswordMatch} from "../components/ErrorComponents";
 import * as VConst from "../constants/VConst";
@@ -8,13 +9,17 @@ import * as VConst from "../constants/VConst";
 class Signup extends Component {
   state = {
     success: false,
-    username: "",
+    firstName: "",
+    lastName: "",
+    phone: "",
+    email: "",
     password: "",
     pswrdConfirmation: "",
-    email: "",
+    userType: "",
+    userImage: "",
     userId: 0,
     errorMsg: "",
-    isValidUserName: true,
+    isValidName: true,
     isValidEmail: true,
     isValidPassword: true,
     doPasswordsMatch: true
@@ -64,16 +69,9 @@ class Signup extends Component {
   }
 
   // Method to register a new user
-  register = (event) => {
+  addCrew = (event) => {
     event.preventDefault();
     let isValidForm = true;
-
-    // validate username
-    if (this.state.username.length < VConst.UnameMinLength || 
-      this.state.username.length > VConst.UnameMaxLength) {
-      this.safeUpdate({isValidUserName: false});
-      isValidForm = false;
-    }
 
     // validate email
     if (!this.isValidEmail(this.state.email)) {
@@ -97,19 +95,22 @@ class Signup extends Component {
 
     AUTH
       .signup({ 
-        username: this.state.username, 
+        firstName: this.state.firstName,
+        lastName: this.state.lastName, 
+        phone: this.state.phone,
         email: this.state.email, 
         password: this.state.password, 
-        pswrdConfirmation: this.state.pswrdConfirmation })
+        pswrdConfirmation: this.state.pswrdConfirmation,
+        userType: this.state.userType,
+        userImage: this.state.image
+       })
       .then(res => {
         console.log("res.data: ", res.data);
         this.safeUpdate({ 
           success: res.data,
           isLoggedIn: res.data.isLoggedIn,
           isAdmin: false, 
-          userId: res.data.userId,
-          username: res.data.username,
-          email: res.data.email         
+          userId: res.data.userId,         
          })
         // ------------------------------
         // Callback function to parent
@@ -121,19 +122,19 @@ class Signup extends Component {
           username: this.state.username,
           email: this.state.email
         }, "/");
-        // ------------------------------
-        // Redirect On Successful Sign Up
-        // ------------------------------
-        this.safeUpdate({ redirectToReferrer: true });
       })
       .catch(err => {
         console.log("Error: ", err.response.data);
         let tempObj = {
           errorMsg: err.response.data,
-          username: "",
-          password: "",
-          email: "",
+          firstName: "",
+          lastName: "", 
+          phone: "",
+          email: "", 
+          password: "", 
           pswrdConfirmation: "",
+          userType: "",
+          userImage: "",
           isLoggedIn: false
         };
         this.safeUpdate(tempObj);
@@ -147,38 +148,48 @@ class Signup extends Component {
   }
 
   render() {
-    // If Signup is successful redirect to Home
-    if (this.state.success) {
-      return <Redirect to="/" />
-    }
 
+    // Validate That Form Data Is Present
+    const { firstName, lastName, email, phone, password, pswrdConfirmation, userType} = this.state;
+    const isEnabled = firstName.length>0 && lastName.length >0 && email.length>0 && phone.length >0 && password.length>0 && pswrdConfirmation.length>0 && userType == "crew" || userType == "admin";
+    // console.log(isEnabled);
+    
     return (
       <div className="container-fluid py-5 background">
         <div className="row justify-content-center text-center">
         
           <form className="col-12 col-md-6 my-1">
-            <h1 className="col-12">Sign Up</h1>
-            <div className="col-12 key-icon-wrap my-1">
-              <i className="fas fa-key"></i>
-            </div> 
+             
             <div className="form-group">
               <input
                 type="text"
-                name="username"
-                value={this.state.username}
+                name="firstName"
+                value={this.state.firstName}
                 onChange={this.handleInputChange}
                 className="form-control center-placeholder"
-                placeholder="Enter Username - 3 To 30 Characters With Letters, Numbers, Or Underscores" />
-              
+                placeholder="First Name" />
             </div>
-            { !this.state.isValidUsername 
-              ? <ErrorUserName 
-                  ErrorInUserName={!this.state.isValidUserName} 
-                  UnameMinLength={VConst.UnameMinLength}
-                  UnameMaxLength={VConst.UnameMaxLength}
-                />
-              : null
-            }
+        
+            <div className="form-group">
+              <input
+                type="text"
+                name="lastName"
+                value={this.state.lastName}
+                onChange={this.handleInputChange}
+                className="form-control center-placeholder"
+                placeholder="Last Name" />      
+            </div>
+        
+            <div className="form-group">
+              <input
+                type="text"
+                name="phone"
+                value={this.state.phone}
+                onChange={this.handleInputChange}
+                className="form-control center-placeholder"
+                placeholder="Phone" />      
+            </div>
+        
 
             <div className="form-group">
               <input
@@ -187,9 +198,9 @@ class Signup extends Component {
                 value={this.state.email}
                 onChange={this.handleInputChange}
                 className="form-control center-placeholder"
-                placeholder="Enter Email" />
-              
+                placeholder="Email" />  
             </div>
+
             { !this.state.isValidEmail 
               ? <ErrorEmail ErrorInEmail={!this.state.isValidEmail} />
               : null
@@ -231,11 +242,38 @@ class Signup extends Component {
               ? this.displayErrorMessage()
               : ""
             }
+
             <div className="form-group">
-              <button type="submit" className="btn btn-block" onClick={this.register}>Sign Up</button>
+              <select
+                type="text"
+                name="userType"
+                value={this.state.userType}
+                onChange={this.handleInputChange}
+                className="form-control center-placeholder"
+                placeholder="Select Role">
+                  <option value="">Select Role</option>
+                  <option value="admin">Admin</option>
+                  <option value="crew">Crew</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <input
+                type="file"
+                accept="image/*"
+                name="image"
+                value={this.state.image}
+                onChange={this.handleInputChange}
+                className="form-control center-placeholder"
+                placeholder="Crew Image" />  
+            </div>
+
+            <div className="form-group">
+              <button type="submit" disabled={!isEnabled} className="btn btn-block" onClick={this.add}>Add Crew Member</button>
             </div>
           
           </form>
+
         </div>
       </div>
     )

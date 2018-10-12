@@ -36,6 +36,10 @@ let usersSchema = new Schema({
     type: String,
     default: "Crew",
   },
+  userImage: {
+    type: String,
+    default: "add default img",
+  },
   addedOnDate: { 
     type: Date,
     default: Date.now()
@@ -139,6 +143,7 @@ module.exports = Users;
 // email:123@gmail.com
 // password:123
 // userType:admin
+// userImage: imgpath.jpg
 // addedOnDate:10-10-2010
 // resetPasswordToken:123
 // resetPasswordExpires:10-10-2010

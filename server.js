@@ -49,19 +49,6 @@ app.use(bodyParser.json());
 // Add options inside an array as a parameter if wanted
 app.use(expressValidator()); 
 
-// Connect Flash For Front End Messaging
-app.use(flash());
-
-// Set Global Variables For Flash Messaging
-// res.locals is a persistant object that can be accessed on the front end 
-// Note: res.locals.error is for Passport generated errors
-app.use(function(req, res,next){
-  res.locals.success_msg = req.flash("success_msg");
-  res.locals.error_msg = req.flash("error_msg");
-  res.locals.error = req.flash("error");
-
-});
-
 // To Read Cookies
 app.use(cookieParser());
 
@@ -81,6 +68,18 @@ app.use(session({
 // Use Passport For Authentication
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Connect Flash For Front End Messaging
+app.use(flash());
+
+// Set Global Variables For Flash Messaging
+// res.locals is a persistant object that can be accessed on the front end 
+// Note: res.locals.error is for Passport generated errors
+// app.use(function(req, res,next){
+//   res.locals.success_msg = req.flash("success_msg");
+//   res.locals.error_msg = req.flash("error_msg");
+//   res.locals.error = req.flash("error");
+// });
 
 // Serve Static Assets On Live (e.g.  Heroku)
 // =============================================================

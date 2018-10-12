@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import API from "../utilities/API";
-import Card from "../components/Card";
+// import Card from "../components/Card";
 // import ForumCard from "../components/ForumCard";
 import Search from "../components/Search";
 import Moment from "moment";
@@ -15,6 +15,7 @@ class Admin extends Component {
 
     // Set Initial State
     this.state = {
+        trips:[],
         modalIsOpen: false
     };
 
@@ -31,7 +32,7 @@ class Admin extends Component {
     }
 
     componentDidMount(){
-        this.pageLoad();
+        
     }
 
     // Load Cheats To State
@@ -287,7 +288,7 @@ class Admin extends Component {
             <div className="row justify-content-center text-center mx-2 my-2">
 
                 <div className="col-12 col-md-5">
-                    <h2>Add New System</h2>
+                    <h2>Add Crew</h2>
                     <form>
                         <div className="form-group">
                             <input type="text" className="form-control my-2 center-placeholder" name="systemName" value={this.state.systemName}  placeholder="Enter New System Name" onChange={this.handleOnChange}/>
@@ -299,7 +300,7 @@ class Admin extends Component {
                 </div>
 
                 <div className="col-12 col-md-5">
-                    <h2>Add New Game</h2>
+                    <h2>Add Boat</h2>
                     <form>
                         <div className="form-group">
                             <input type="text" className="form-control my-2 center-placeholder" name="gameName" value={this.state.gameName}  placeholder="Enter New Game Name" onChange={this.handleOnChange}/>
@@ -311,72 +312,17 @@ class Admin extends Component {
                 </div>
             </div>
             
-            <div className="row justify-content-center text-center mx-3 my-2">
-                
-                <div className="col-12 col-md-5">
-                    <h2>Add Cheat Type</h2>
-                    <form>
-                        <div className="form-group">
-                            <input type="text" className="form-control my-2 center-placeholder" name="cheatName" value={this.state.cheatName}  placeholder="Enter Cheat Name" onChange={this.handleOnChange}/>
-                            <input type="text" className="form-control my-2 center-placeholder" name="cheatImage" value={this.state.cheatImage}  placeholder="Enter Cheat Image Path" onChange={this.handleOnChange}/>
-                            <input type="text" className="form-control my-2 center-placeholder" name="cheatDescription" value={this.state.cheatDescription}  placeholder="Enter Cheat Description" onChange={this.handleOnChange}/>
-                            <button type="submit" className="btn btn-block my-2" onClick={this.postCheat}>Add Cheat</button>
-                        </div>
-
-                    </form>
-                </div>
-
-            </div>
 
         
             <div className="row justify-content-center text-center mt-4 mb-2">
                 <h2 className="col-12">Tracked Systems</h2>
-                {this.state.systems.map(system => {
 
-                    return  (
-                        <Card 
-                            key={system._id} 
-                            systemName={system.systemName}
-                            systemImage={system.systemImage}
-                            cheatCount={system.cheatCount}
-                            _id = {system._id}
-                            updateSystem={this.updateSystem}
-                        />
-                )})}
             </div>
 
 
             <div className="row justify-content-center text-center pt-3 pb-2">
                 <h2 className="col-12">Tracked Games</h2>
-                {this.state.games.map(game => {
-
-                    return  (
-                        <Card 
-                            key={game._id} 
-                            gameName={game.gameName}
-                            gameImage={game.gameImage}
-                            cheatCount={game.cheatCount}
-                            _id = {game._id}
-                            updateGame={this.updateGame}
-                        />
-                    )})}
-            </div>
-
-            <div className="row justify-content-center text-center pb-2">
-                <h2 className="col-12">Tracked Cheats</h2>
-                {this.state.cheats.map(cheat => {
-
-                    return  (
-                        <Card 
-                            key={cheat._id} 
-                            cheatName={cheat.cheatName}
-                            cheatImage={cheat.cheatImage}
-                            cheatCount={cheat.cheatCount}
-                            cheatDescription={cheat.cheatDescription}
-                            _id = {cheat._id}
-                            updateCheat={this.updateCheat}
-                        />
-                    )})}
+           
             </div>
 
 
@@ -385,14 +331,14 @@ class Admin extends Component {
             />
                     
             <div className="container py-5">
-                <h2 className="col-12 text-center">{this.state.reports.length
+                <h2 className="col-12 text-center">{this.state.trips.length
                     ? ""
                     : "No Search Results!"}
                 </h2>
                 <div className="row justify-content-center">
                 <table className="col-10">
                     <tbody>
-                    {this.state.reports.map(report=>{
+                    {this.state.trips.map(report=>{
                         return (
                         <tr className="row justify-content-center reports-row py-2" key={report._id}>
                             

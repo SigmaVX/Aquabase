@@ -25,8 +25,7 @@ class App extends Component {
       // ---------------------------
       isLoggedIn: false,
       isAdmin: false,
-      username: "",
-      email: "",
+      crewname: "",
       userId: "",
       returnStatus: 0,
       errorMsg: "",
@@ -41,18 +40,12 @@ class App extends Component {
     console.log(authObj);
   }
 
-  // Setting State For Login
-  SignupResult = (authObj, redirPath) => {
-      this.safeUpdate(authObj);
-      this.redirPath = redirPath;
-  }
-
-  // Setting State For Login
+  // Setting State For Reset
   ResetResult = (authObj) => {
     console.log("Updating Parent Data");
     console.log("Auth Object: ", authObj);
     this.safeUpdate(authObj);
-}
+  }
 
   LogoutResult = (authObj) => this.setState(authObj);
 
@@ -85,7 +78,6 @@ class App extends Component {
         if (res.data.isLoggedIn) this.isAuthenticated = true;
         this.safeUpdate({
           isLoggedIn: res.data.isLoggedIn,
-          username: res.data.username,
           userId: res.data.userId,
           email: res.data.email
         });
@@ -165,35 +157,45 @@ class App extends Component {
           <Switch>
             <Route exact path="/" render={() => 
               <Home username = {this.state.username} 
-                    userId = {this.state.userId}
-                    email = {this.state.email} />} 
-              />
+                  userId = {this.state.userId}
+                  email = {this.state.email}
+              />}
+            />
 
-            <Route exact path="/forgot" component={Forgot}/>
-
-            <Route exact path="/login" 
-                  render={(props) => 
-                    <Login 
-                      {...props}
-                      getLoginResult = {this.LoginResult} 
-                    />} 
+            <Route exact path="/login" render={(props) => 
+              <Login 
+                {...props}
+                getLoginResult = {this.LoginResult} 
+              />} 
             /> 
 
-            <Route exact path="/signup" 
-                  render={(props) => 
-                    <Signup
-                    {...props}
-                    getSignupResult = {this.SignupResult}
-                    />} 
+            <Route exact path="/auth/reset" render={(props) => 
+              <Reset
+                {...props}
+                getResetResult = {this.ResetResult}
+              />} 
             />
 
-            <Route exact path="/auth/reset" 
-                  render={(props) => 
-                    <Reset
-                    {...props}
-                    getResetResult = {this.ResetResult}
-                    />} 
-            />
+            <Route exact path="/admin" render={(props) => 
+              <Admin 
+                {...props}
+                isLoggedIn = {this.state.isLoggedIn}
+                isAdmin = {this.state.isAdmin}
+                userId = {this.state.userId}
+                username = {this.state.username}
+                email = {this.state.email} 
+              />} 
+            /> 
+
+            <Route exact path="/signup" render={(props) => 
+              <Signup 
+                {...props}
+                 
+              />} 
+            /> 
+
+
+            <Route exact path="/admin" render={<Admin/>}/>
 
             <Route exact path="/logout" render={() => <Logout getLogoutResult = {this.LogoutResult} />} />
 

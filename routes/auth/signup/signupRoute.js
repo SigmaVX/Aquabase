@@ -16,7 +16,6 @@ router
     body('password', 'Password Must Be 6 To 100 Characters').trim().isLength({ min:6, max:100}),
     // body('pswrdConfirmation', 'Passwords Do Not Match').equals(req.body.password),
 
-
     body('pswrdConfirmation').custom((value, { req }) => {
       if (req.body.pswrdConfirmation !== req.body.password) {
         throw new Error('Passwords Do Not Match');
@@ -29,7 +28,7 @@ router
     body('username', 'Username Can Only Contain Letters, Numbers, Or Underscores').matches(/^[a-zA-Z0-9-_]+$/, 'i')
     ], function(req, res) {
 
-
+    console.log("Sign Up Req: ", req);
     // Formats the errors returned by express validator so its compatable with the front end
     const errorFormatter = ({ location, msg, param, value, nestedErrors }) => {
       return `${msg}`;

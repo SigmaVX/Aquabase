@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 // Sign Up Object Format: 
 //  userInfo = {
 //    email: "alex@example.com" 

@@ -8,6 +8,12 @@ X-Add Univeral Controlers
 X-Add Univeral Routes
 - Test if need Express Validator in Server JS since its in models
 -Add User Authentication
+    - Admin/Crew Sign In
+    - Update Password
+    - Password Reset
+    - Crew Portal With Trips
+    - Admin Page To Add Crew, Boats
+    - Post Page To Add Trips
 -Test User Authentication
 X -Test Routes
     x - POST Boats
@@ -20,4 +26,10 @@ Front End
 -Conditional Routes
 -Local weather API
 -Add image uplaod S3
+-Crew Portal
+    - Upcoming Trips
+    - Old Trip Search
+    - Captain Notices
+-Clients page with list of Trips
+ 
 

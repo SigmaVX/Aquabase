@@ -22,7 +22,7 @@ class Login extends Component {
       isValidPassword: true,
       isValidEmail: true,
       modalIsOpen: false,
-      formatMsg: "Please Enter The Email Associated With Your Tilt Account",
+      formatMsg: "Please Enter The Email Associated With Your Aquabase Account",
       forgotEmail: ""
     }
     // Bind This For Modal
@@ -159,11 +159,6 @@ class Login extends Component {
     });
   }
 
-  signup = (event) =>{
-    event.preventDefault();
-    this.props.history.push(`/signup`)
-  }
-
   // Modal Methods
   // ==========================================================
    
@@ -201,7 +196,7 @@ class Login extends Component {
         <div className="row justify-content-center login-alert">
           
         
-          <h1 className="col-12 text-center">Login</h1>
+          <h1 className="col-12 text-center">Admin Login</h1>
           <div className="col-12 key-icon-wrap my-1">
             <i className="fab fa-keycdn"></i>
           </div> 
@@ -257,9 +252,6 @@ class Login extends Component {
             <div className="form-group">
               <button type="submit" className="btn btn-block mt-3" onClick={this.login}>
                 Submit Login
-              </button>
-              <button type="submit" className="btn btn-block mt-3" onClick={this.signup}>
-                Sign Up
               </button>
               <div className="btn btn-block mt-3" onClick={()=>this.openModal()}>
                 Forgot Password?
