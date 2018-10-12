@@ -30,7 +30,6 @@ export default {
       return axios.get("/auth/logout")
     },
     signup: function(userInfo) {
-      console.log(userInfo);
       return axios.post("/auth/signup", userInfo)
     },
     updatePassword: function(userInfo) {

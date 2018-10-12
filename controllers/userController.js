@@ -1,14 +1,6 @@
-// require("../models");
-// const bcrypt = require("bcrypt");
 const Users = require("../models/Users");
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
-
-// Minimum username length
-const UnameMinLength = 3;
-
-// Maximum username length
-const UnameMaxLength = 30;
 
 // Minimum password length
 const MinPasswordLength = 6;
@@ -16,15 +8,10 @@ const MinPasswordLength = 6;
 // Defining database methods for the Tilt's User table
 module.exports = {
 
+  // Add Crew To Database
   create: function (req, res) {
     let isValidEntry = true;
     let errorText = "";
-
-    // -----------------------------------------------------------------------
-    // validateEmail() checks if an email is valid
-    // Source code for regular expression (regex):
-    // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript/1373724#1373724
-    // -----------------------------------------------------------------------
 
     function validateEmail(email) {
 
@@ -35,15 +22,12 @@ module.exports = {
       // Returns true if it finds a match, otherwise it returns false
       return re.test(email);
     }
-
-    // Backend Validations
-    // -----------------------------------------------------------------------
     
-    // Validate username
-    if (req.body.username.length < UnameMinLength || 
-      req.body.username.length > UnameMaxLength) {
+    // Validate name fields
+    if (req.body.firstName.length == 0 || 
+      req.body.lastName.length == 0) {
       isValidEntry = false;
-      errorText += `Username Must Be ${UnameMinLength} To ${UnameMaxLength} Characters.\n`;
+      errorText += `Name Fields Are Missing.\n`;
     }
 
     // Validate email - checks for false result of validateEmail()
@@ -64,38 +48,50 @@ module.exports = {
       errorText += `Password & Confirmation Do Not Match.\n`;
     }
 
-    // Run if all validations pass
-    if (isValidEntry) {
+    // Validate duplicate email
+    Users
+      .findOne({email:req.body.email}, function(err, result){
+        if(err){
+          console.log("Error: ", err);
+          isValidEntry = false;
+        }
+        if(result){
+          console.log("Duplicate Email Found: ", result.email);
+          isValidEntry = false;
+          errorText += `Email Already In Use.\n`;
+        }
+    
+        
+      // Run if all validations pass
+      if (isValidEntry) {
 
-      let userData = {
-        email: req.body.email,
-        username: req.body.username,
-        password: req.body.password
-      }
+        let userData = {
+          firstName: req.body.firstName,
+          lastName: req.body.lastName, 
+          phone: req.body.phone,
+          email: req.body.email, 
+          password: req.body.password, 
+          userType: req.body.userType,
+          userImage: req.body.image
+        }
 
-      //Use schema.create to insert data into the db 
-      Users
+        //Add data to db 
+        Users
         .create(userData, function (err, user) {
-          if (err) {console.log(err); res.status(404).send("Username and/or Email Already Exists");}
-
-          // Left Hand Side Comes From Sessions & Maps To Our User Table
-          req.session.userId = user._id;
-          req.session.username = user.username;
-          req.session.userType = user.userType;
-          req.session.email = user.email;
+          if (err) {
+            console.log(err);
+            res.status(404).send(`Back End Validation Err: ${err}`);
+          }
 
           // Returns User Information to Front-End
           res.json({
-            isLoggedIn: true,
-            userId: req.session.userId,
-            username: req.session.username,
-            email: req.session.email
+            successMsg: "User Added"
           });          
-        });
-    }
-    else {
-      res.status(404).send(errorText);
-    }
+        });       
+      } else {
+          res.status(404).send(errorText);
+      }
+    });
   },
 
   findAll: function (req, res) {

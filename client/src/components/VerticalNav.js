@@ -73,17 +73,12 @@ class VerticalNav extends Component {
       customBurgerIcon={ <img id="burger-icon" src="/images/pinball-orange.png" alt="tilt icon"/> } 
       isOpen={this.state.menuOpen}
       onStateChange={(state) => this.handleStateChange(state)}
-
-
       >
         <nav className="navbar">
 
        
           <Link className="bm-header" to="/">
-            <span>
-              <img className="nav-icon mr-2" src="/images/pinball-orange.png" alt="Tilt Icon"/>
-              Tilt
-            </span>
+              <img className="nav-icon mr-2" src="/images/aquabase-icon.png" alt="Aquabase Icon"/>
           </Link>
           
         

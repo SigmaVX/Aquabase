@@ -8,7 +8,6 @@ import * as VConst from "../constants/VConst";
 
 class Signup extends Component {
   state = {
-    success: false,
     firstName: "",
     lastName: "",
     phone: "",
@@ -17,9 +16,8 @@ class Signup extends Component {
     pswrdConfirmation: "",
     userType: "",
     userImage: "",
-    userId: 0,
     errorMsg: "",
-    isValidName: true,
+    successMsg: "",
     isValidEmail: true,
     isValidPassword: true,
     doPasswordsMatch: true
@@ -47,15 +45,25 @@ class Signup extends Component {
   }
 
   displayErrorMessage() {
-    console.log("Checking Error Message");
-    if (this.state.errorMsg !== "") {
-      return (
-        <div className="alert alert-danger text-center mb-2">
-          {this.state.errorMsg}
-        </div>
-      );
-    }
+    return (
+      <div className="form-group alert alert-danger text-center mb-2">
+        {this.state.errorMsg}
+      </div>
+    );
   }
+
+  displaySuccessMessage() {
+    setTimeout(()=>{
+      this.safeUpdate({successMsg:""});
+    }, 5000);
+
+    return (
+      <div id="success-message" className="form-group alert alert-success text-center mb-2">
+        {this.state.successMsg}
+      </div>
+    );
+  }
+  
 
   // -----------------------------------------------------------------------
   // isValidEmail() checks if an email is valid
@@ -106,27 +114,7 @@ class Signup extends Component {
        })
       .then(res => {
         console.log("res.data: ", res.data);
-        this.safeUpdate({ 
-          success: res.data,
-          isLoggedIn: res.data.isLoggedIn,
-          isAdmin: false, 
-          userId: res.data.userId,         
-         })
-        // ------------------------------
-        // Callback function to parent
-        // ------------------------------
-        this.props.getSignupResult({
-          isLoggedIn: this.state.isLoggedIn,
-          isAdmin: false, 
-          userId: this.state.userId,
-          username: this.state.username,
-          email: this.state.email
-        }, "/");
-      })
-      .catch(err => {
-        console.log("Error: ", err.response.data);
         let tempObj = {
-          errorMsg: err.response.data,
           firstName: "",
           lastName: "", 
           phone: "",
@@ -135,12 +123,18 @@ class Signup extends Component {
           pswrdConfirmation: "",
           userType: "",
           userImage: "",
-          isLoggedIn: false
+          errorMsg: "",
+          successMsg: res.data.successMsg
         };
         this.safeUpdate(tempObj);
+      })
+      .catch(err => {
+        console.log("Error: ", err.response.data);
+        this.safeUpdate({errorMsg: err.response.data});
       });
+
     this.safeUpdate({            
-      isValidUserName: true,
+      isValidName: true,
       isValidPassword: true,
       isValidEmail: true,
       doPasswordsMatch: true
@@ -237,12 +231,7 @@ class Signup extends Component {
               ? <ErrorPasswordMatch ErrorInPasswordMatch={!this.state.doPasswordsMatch} />
               : null
             }
-            {
-              this.state.errorMsg !== "" 
-              ? this.displayErrorMessage()
-              : ""
-            }
-
+            
             <div className="form-group">
               <select
                 type="text"
@@ -268,8 +257,20 @@ class Signup extends Component {
                 placeholder="Crew Image" />  
             </div>
 
+            {
+              this.state.errorMsg !== "" 
+              ? this.displayErrorMessage()
+              : ""
+            }
+
+            {
+              this.state.successMsg !== "" 
+              ? this.displaySuccessMessage()
+              : ""
+            }
+
             <div className="form-group">
-              <button type="submit" disabled={!isEnabled} className="btn btn-block" onClick={this.add}>Add Crew Member</button>
+              <button type="submit" disabled={!isEnabled} className="btn btn-block" onClick={this.addCrew}>Add Crew Member</button>
             </div>
           
           </form>

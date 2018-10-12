@@ -190,12 +190,8 @@ class App extends Component {
             <Route exact path="/signup" render={(props) => 
               <Signup 
                 {...props}
-                 
               />} 
             /> 
-
-
-            <Route exact path="/admin" render={<Admin/>}/>
 
             <Route exact path="/logout" render={() => <Logout getLogoutResult = {this.LogoutResult} />} />
 

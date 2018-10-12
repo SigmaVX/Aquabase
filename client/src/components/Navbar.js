@@ -46,7 +46,7 @@ class Navbar extends Component {
     return  (
       <nav className="navbar navbar-expand-lg">
         <Link className="navbar-brand" to="/">
-          <img className="nav-icon" src="" alt="Aquabase Icon"/>
+          <img className="nav-icon" src="/images/aquabase-icon.png" alt="Aquabase Icon"/>
         </Link>
         
         <div className="collapse navbar-collapse" id="navbarNav">

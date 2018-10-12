@@ -10,7 +10,7 @@ let usersSchema = new Schema({
   firstName: {
     type: String,
     required: true,
-    // trim: true
+    trim: true
   },
   lastName: {
     type: String,
@@ -30,10 +30,12 @@ let usersSchema = new Schema({
   },
   password: {
     type: String,
+    required: true,
     trim: true
   },
   userType: {
     type: String,
+    required: true,
     default: "Crew",
   },
   userImage: {
