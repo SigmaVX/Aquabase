@@ -2,23 +2,39 @@ import React, {Component} from "react";
 import { Link } from "react-router-dom";
 
 
+
+
+
+function AdminBar(props) {
+  const isAdmin = props.isAdmin;
+  if (isAdmin) {
+    return (
+      <div className="d-flex">
+        <li className={window.location.pathname === "/admin" ? "nav-item active nav-active" : "nav-item"}>
+          <Link className="nav-link" to="/admin">Aquabase</Link>
+        </li>
+
+        <li className={window.location.pathname === "/signup" ? "nav-item active nav-active" : "nav-item"}>
+          <Link className="nav-link" to="/signup">Add Crew</Link>
+        </li>
+      </div>
+    );
+  }
+  return "";
+}
+
+
 function AuthMenu(props) {
   const isLoggedIn = props.isLoggedIn;
   
   if (isLoggedIn) {
     return (
       <div className="d-flex">
-        <li className={window.location.pathname === "/crew-info" ? "nav-item active nav-active" : "nav-item"}>
-          <Link className="nav-link" to="/crew-info">Crew Info</Link>
-        </li>
-        <li className={window.location.pathname === "/admin" ? "nav-item active nav-active" : "nav-item"}>
-          <Link className="nav-link" to="/admin">Aquabase</Link>
+        <li className={window.location.pathname === "/crew-portal" ? "nav-item active nav-active" : "nav-item"}>
+          <Link className="nav-link" to="/crew-portal">Crew Portal</Link>
         </li>
         <li className={window.location.pathname === "/logout" ? "nav-item active nav-active" : "nav-item"}>
           <Link className="nav-link" to="/logout">Logout</Link>
-        </li>
-        <li className="nav-item">
-          <p className="username">Logged In As {props.userName}</p>
         </li>
       </div>
     );
@@ -56,19 +72,15 @@ class Navbar extends Component {
               <Link className="nav-link" to="/about">About</Link>
             </li>
 
-            <li className={window.location.pathname === "/admin" ? "nav-item active nav-active" : "nav-item"}>
-              <Link className="nav-link" to="/admin">Aquabase</Link>
-            </li>
 
-            <li className={window.location.pathname === "/signup" ? "nav-item active nav-active" : "nav-item"}>
-              <Link className="nav-link" to="/signup">Add Crew</Link>
-            </li>
+
+            <AdminBar isAdmin = {this.props.isAdmin} />
 
             <AuthMenu 
               isLoggedIn = {this.props.isLoggedIn}
               userName = {this.props.username}
-             />
-
+              />
+              
           </ul>
         </div>
       </nav>

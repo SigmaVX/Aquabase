@@ -1,11 +1,8 @@
 import React, {Component} from "react";
-import API from "../utilities/API";
-// import Card from "../components/Card";
-// import ForumCard from "../components/ForumCard";
 import Search from "../components/Search";
 import Moment from "moment";
 import Modal from 'react-modal';
-// import {DefaultChatForum} from "../constants/VConst.js";
+import API from "../utilities/API";
 // import ReactDOM from 'react-dom';
 
 class Admin extends Component {

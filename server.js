@@ -97,22 +97,6 @@ app.get("*", function(req, res) {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
 
-// Setup socket.io
-// ============================================================= 
-// var server = require("http").createServer(app);
-// var io = require("socket.io")(server);
-
-// Open socket listener for chat feature
-// ==============================================================
-// start up socket io
-// require("./socket")(io);
-
-// server.listen(PORT); changed to app.listen from server.listen
-// to remove socket.io functionality
-// server.listen(PORT, function() {
-//   console.log(`🌎 ==> Server now on port ${PORT}!`);
-// });
-
 app.listen(PORT, function() {
   console.log(`🌎 ==> Server now on port ${PORT}!`);
 });

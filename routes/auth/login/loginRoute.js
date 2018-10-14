@@ -5,6 +5,6 @@ const dbController = require("../../../controllers/userController");
 router
   .route("/")
   .get(function(req, res) {dbController.findById(req, res);})
-  .post(function(req, res, next) {dbController.login(req, res, next);})
+  .post(function(req, res, next) {dbController.login(req, res, next);}) 
 
 module.exports = router;

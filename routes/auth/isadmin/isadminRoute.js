@@ -5,7 +5,7 @@ const dbController = require("../../../controllers/userController");
 router
   .route("/")
   .get(function(req, res) {
-    // console.log("Is Admin Req: ", req);
+    console.log("Is Admin Req: ", req);
     dbController.isAdmin(req, res);});
 
 module.exports = router;

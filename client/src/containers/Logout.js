@@ -11,18 +11,17 @@ class Logout extends Component {
     }
   }
 
-  // simply call logout function as soon as component mounts
+  // Calls logout functionon component mount
   componentDidMount() {
     AUTH
       .logout()
       .then(res => {
-          // console.log(res.data);
-          // ------------------------------
-          // callback function to parent
-          // ------------------------------
-          this.props.getLogoutResult(
-            res.data
-          );
+        // ------------------------------
+        // callback function to parent
+        // ------------------------------
+        this.props.getLogoutResult(
+          res.data
+        );
       })
       .catch(err => {
         console.log(err); 
@@ -31,10 +30,9 @@ class Logout extends Component {
 
   render() {
     return (
-      <Redirect to={{ pathname: "/login" }} />    
-      );
+      <Redirect to={{ pathname: "/" }}/>
+    );
   }
-
 }
 
 export default Logout;

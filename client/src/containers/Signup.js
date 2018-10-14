@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-// import { Redirect } from "react-router-dom";
-import ReactDOM from "react-dom";
 import AUTH from "../utilities/AUTH";
-import {ErrorUserName, ErrorPassword, ErrorEmail, ErrorPasswordMatch} from "../components/ErrorComponents";
+import { ErrorPassword, ErrorEmail, ErrorPasswordMatch} from "../components/ErrorComponents";
 import * as VConst from "../constants/VConst";
 
 
@@ -78,6 +76,7 @@ class Signup extends Component {
 
   // Method to register a new user
   addCrew = (event) => {
+    console.log("Clicked");
     event.preventDefault();
     let isValidForm = true;
 
@@ -113,7 +112,7 @@ class Signup extends Component {
         userImage: this.state.image
        })
       .then(res => {
-        console.log("res.data: ", res.data);
+        console.log("res.data: ", res.data, res.success_msg);
         let tempObj = {
           firstName: "",
           lastName: "", 

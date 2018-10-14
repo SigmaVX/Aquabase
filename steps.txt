@@ -6,30 +6,42 @@ X-Add Dependencies
 X-Add Models and Schema
 X-Add Univeral Controlers
 X-Add Univeral Routes
-- Test if need Express Validator in Server JS since its in models
--Add User Authentication
-    - Admin/Crew Sign In
-    - Update Password
-    - Password Reset
-    - Crew Portal With Trips
-    - Admin Page To Add Crew, Boats
-    - Post Page To Add Trips
--Test User Authentication
-X -Test Routes
+X-Test Routes
     x - POST Boats
     X - POST Users
     X - POST Trips
     X - POST Clients
+-Add User Authentication
+    X - Admin/Crew Sign Up
+    X - Admin/Crew Login
+    - Update Password
+    - Reset Password
+    - Rate Limits On Password
+- Remove console.logs
+
 
 Front End
 -Admin Portal
 -Conditional Routes
--Local weather API
+-About Page
+-Crew Page
+-Boats Page
+-Book Trip Page
+-Checkout Page
 -Add image uplaod S3
 -Crew Portal
     - Upcoming Trips
     - Old Trip Search
     - Captain Notices
 -Clients page with list of Trips
+- Admin Page To Add Crew, Boats
+- Post Page To Add Trips
+- Fix React Warnings
+- Remove FE console logs
+
+
+Optional Features
+-Notify Customers On Trip Change
+-Local weather API
  
 

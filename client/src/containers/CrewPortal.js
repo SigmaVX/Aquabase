@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-class Login extends Component {
+class CrewPortal extends Component {
 
   constructor(props) {
     super(props);
@@ -16,10 +16,8 @@ class Login extends Component {
       [name]: value
     })
   }
-
   
-  render() {
-    
+  render() { 
 
     return (
       <div>
@@ -32,4 +30,4 @@ class Login extends Component {
     }
 }
 
-export default CrewInfo;
+export default CrewPortal;

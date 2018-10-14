@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const dbController = require("../../../controllers/userController");
-const { check, body, checkBody, validationResult } = require('express-validator/check');
+const {body, validationResult } = require('express-validator/check');
 
 
 // For "/auth/signup"
@@ -10,6 +10,7 @@ router
   .post([
     
     // Express Validation Checks - Not Really Needed Bc We Also Do In Controller Manually
+    // Data Is Req Sent To User Controller Once Validations Pass 
     body('firstName', 'First Name Is Required').trim().isLength({ min: 1}),
     body('lastName', 'Last Name Is Required').trim().isLength({ min: 1}),
     body('email', 'This Email Is Invalid').trim().isEmail(),
@@ -36,7 +37,7 @@ router
       console.log("Errors: ", errors.array());
       return res.status(422).send(`Back End Validation Failed: ${errors.array()[0]}`);
     } else {   
-      dbController.create(req, res);
+      dbController.addCrew(req, res);
     }
   }
 )

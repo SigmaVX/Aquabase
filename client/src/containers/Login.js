@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import {Redirect, Link} from "react-router-dom";
 import AUTH from "../utilities/AUTH";
 import Modal from 'react-modal';
-import {ErrorUserName, ErrorPassword, WrongEmail} from "../components/ErrorComponents";
-import * as VConst from "../constants/VConst";
+import {WrongEmail} from "../components/ErrorComponents";
+// import * as VConst from "../constants/VConst";
 
 class Login extends Component {
 
@@ -12,13 +12,13 @@ class Login extends Component {
     this.state = {
       redirectToReferrer: false,
       isLoggedIn: false,
-      username: "",
+      isAdmin: false,
       email: "",
-      userId: "",
       password: "",
+      userId: "",
+      userType: "",
       returnStatus: 0,
       errorMsg: "",
-      isValidUserName: true,
       isValidPassword: true,
       isValidEmail: true,
       modalIsOpen: false,
@@ -31,11 +31,9 @@ class Login extends Component {
     this.closeModal = this.closeModal.bind(this);
   }
 
-    
-
   componentDidMount() {
     this._isMounted = true;
-    this.nextPathNav = "/";
+    this.nextPathNav = "/crew-portal";
   }
 
   componentWillMount() {
@@ -73,6 +71,7 @@ class Login extends Component {
   }
 
   resetPassword(event){
+    
     event.preventDefault();
    
     AUTH
@@ -86,75 +85,72 @@ class Login extends Component {
       })
   }
 
-  // Method to handle user login - redirects to Home when done
-  // validates entries first
+  // Login With Sessions & Bycrpt
   login = (event) => {
     let isValidForm = true;
     event.preventDefault();
 
-    // validate username
-    if (this.state.username.length < VConst.UnameMinLength || 
-        this.state.username.length > VConst.UnameMaxLength) {
-      this.safeUpdate({isValidUserName: false});
-      isValidForm = false;
-    }
-
-    if (this.state.password.length < VConst.MinPasswordLength) {
-      this.safeUpdate({isValidPassword: false});
-      isValidForm = false;
-    }
-
-    if (!isValidForm) return;
-    
     AUTH
-      .login({username: this.state.username, password: this.state.password})
+      .login({email: this.state.email, password: this.state.password})
       .then(res => {
-        console.log("Data Returned After Login: ", res.data);
-        this.safeUpdate({
-          isLoggedIn: res.data.isLoggedIn,
-          username: res.data.username,
-          userId: res.data.userId,
-          email: res.data.email
-        });
+        console.log("Res Data: ", res.data);
+          if(res.data.userType == "admin"){
+            
+            this.safeUpdate({
+              isLoggedIn: res.data.isLoggedIn,
+              firstName: res.data.firstName,
+              lastName: res.data.lastName,
+              userType: res.data.userType,
+              userId: res.data.userId,
+              email: res.data.email,
+              redirectToReferrer: true,
+              isAdmin: true,
+              errorMsg: ""
+            });
 
-        // check if user is admin
-        AUTH
-        .adminCheck()
-        .then(res => {
-          this.safeUpdate({ 
-            redirectToReferrer: true,
-            isAdmin: res.data.isAdmin,
-          });
+          } else {
+            this.safeUpdate({
+              isLoggedIn: res.data.isLoggedIn,
+              firstName: res.data.firstName,
+              lastName: res.data.lastName,
+              userType: res.data.userType,
+              userId: res.data.userId,
+              email: res.data.email,
+              redirectToReferrer: true,
+              isAdmin: false,
+              errorMsg: ""
+            });
+          }
+ 
+          console.log(this.state.isAdmin);
+        
           // ------------------------------
-          // callback function to parent
+          // Callback To Parent
           // ------------------------------
           this.props.getLoginResult({
             isLoggedIn: this.state.isLoggedIn,
-            isAdmin: res.data.isAdmin, 
+            isAdmin: this.state.isAdmin, 
             userId: this.state.userId,
-            username: this.state.username,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            userType: this.state.userType,
             email: this.state.email
-          }, this.nextPathNav);
-        })
-        .catch(err => {
-          console.log(err);
-          this.safeUpdate({isAdmin: false});  
-        })
-      })
+            }, this.nextPathNav);
+          })
+      
       .catch(err => {
         console.log(err);
         let tempObj = {
           returnStatus: -1,
           errorMsg: "Incorrect Username and/or Password",
-          username: "",
           password: "",
           isLoggedIn: false
         };
         this.safeUpdate(tempObj);
       });
-    
+
     this.safeUpdate({            
-      isValidUserName: true,
+      isValidEmail: true,
       isValidPassword: true
     });
   }
@@ -167,7 +163,6 @@ class Login extends Component {
   }
  
   afterOpenModal() {
-    // references are now sync'd and can be accessed.
     // this.subtitle.style.color = '#f00';
   }
  
@@ -178,53 +173,39 @@ class Login extends Component {
 
 
   render() {
-    // return to page from which user was originally sent before login attempt
-    // if this fails, return to home page
-    this.nextPathNav = (this.props.location.state) ? this.props.location.state.referrer : "/";
-    const { redirectToReferrer } = this.state;
 
+    // Redirects To Crew Portal After Login
+    const { redirectToReferrer } = this.state;
     if (redirectToReferrer) {
-      // console.log(`Login.js referrer: ${this.nextPathNav}`);
       return (
-        <Redirect to={{ pathname: this.nextPathNav }} />
+        <Redirect to={{ pathname: "/crew-portal" }} />
       );
     } 
+
+    // Prevent Submit If Fields Are Empty
+    const isEnabled = this.state.email.length>0 && this.state.password.length>0;
+
 
     return (
       <div className="container-fluid no-guters py-5 px-0 background">
         
         <div className="row justify-content-center login-alert">
           
-        
-          <h1 className="col-12 text-center">Admin Login</h1>
-          <div className="col-12 key-icon-wrap my-1">
-            <i className="fab fa-keycdn"></i>
-          </div> 
+          <h1 className="col-12 text-center">Crew Login</h1>
 
           <form className="col-12 col-md-6 my-1">
             
-            <div className="form-group">
-              
+            <div className="form-group"> 
               <input
                 type="text"
-                name="username"
-                value={this.state.username}
+                name="email"
+                value={this.state.email}
                 onChange={this.handleInputChange}
                 className="form-control center-placeholder"
-                placeholder="Enter Username"/>
+                placeholder="Enter Email"/>
             </div>
             
-            { !this.state.isValidUsername 
-              ? <ErrorUserName 
-                  ErrorInUserName={!this.state.isValidUserName} 
-                  UnameMinLength={VConst.UnameMinLength}
-                  UnameMaxLength={VConst.UnameMaxLength}
-                />
-              : null
-            }
-
-            <div className="form-group">
-              
+            <div className="form-group"> 
               <input
                 type="password"
                 name="password"
@@ -235,22 +216,15 @@ class Login extends Component {
               />
             </div>
 
-            { !this.state.isValidPassword 
-              ? <ErrorPassword 
-                  ErrorInPassword={!this.state.isValidPassword} 
-                  MinPasswordLength={VConst.MinPasswordLength}
-                />
-              : null
-            }
-
             {
               this.state.returnStatus !== 0 
               ? this.checkErrorMessage()
               : ""
             } 
 
+
             <div className="form-group">
-              <button type="submit" className="btn btn-block mt-3" onClick={this.login}>
+              <button type="submit" disabled={!isEnabled} className="btn btn-block mt-3" onClick={this.login}>
                 Submit Login
               </button>
               <div className="btn btn-block mt-3" onClick={()=>this.openModal()}>

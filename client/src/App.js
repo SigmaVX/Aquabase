@@ -20,16 +20,16 @@ class App extends Component {
     super(props);
 
     this.state = {
-      // --
-      // 'session' variables
-      // ---------------------------
       isLoggedIn: false,
       isAdmin: false,
-      crewname: "",
       userId: "",
       returnStatus: 0,
       errorMsg: "",
-      redirectReferrer: false
+      redirectReferrer: false,
+      firstName: "",
+      lastName: "",
+      userType: "",
+      email: ""
     };
   }
 
@@ -141,6 +141,9 @@ class App extends Component {
   // <this.AdminRoute exact path="/admin" component={Admin}/>
 
   render () { 
+
+    console.log("Parent State: ", this.state);
+
     return (
     <Router>
      

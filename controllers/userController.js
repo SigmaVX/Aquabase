@@ -1,6 +1,5 @@
 const Users = require("../models/Users");
-const passport = require("passport");
-const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require("bcrypt"); 
 
 // Minimum password length
 const MinPasswordLength = 6;
@@ -9,7 +8,7 @@ const MinPasswordLength = 6;
 module.exports = {
 
   // Add Crew To Database
-  create: function (req, res) {
+  addCrew: function (req, res) {
     let isValidEntry = true;
     let errorText = "";
 
@@ -61,7 +60,6 @@ module.exports = {
           errorText += `Email Already In Use.\n`;
         }
     
-        
       // Run if all validations pass
       if (isValidEntry) {
 
@@ -80,6 +78,7 @@ module.exports = {
         .create(userData, function (err, user) {
           if (err) {
             console.log(err);
+            // req.flash("success_msg", "Flash: User Added");
             res.status(404).send(`Back End Validation Err: ${err}`);
           }
 
@@ -94,44 +93,16 @@ module.exports = {
     });
   },
 
+  // Not Yet Used - Returns All Users
   findAll: function (req, res) {
     Users
       .find(req.query)
-      .sort({ date: -1 })
+      .sort({ lastName: 1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
 
-  // Not Used - Old Login Post Route Used With Sessions
-  findOne: function(req, res) {
-    if (req.body.username && req.body.password) {
-      Users
-        .authenticate(req.body.username, req.body.password, function (err, user) {
-          if (err) {
-            console.log(err);
-            res.status(404).send("Incorrect Username/Password");
-          } 
-          
-          if (!user) {
-            res.status(404).send("Incorrect Username/Password");
-          } else {
-            req.session.userId = user._id;
-            req.session.username = user.username;
-            req.session.email = user.email;
-            res.json({
-              isLoggedIn: true,
-              userId: req.session.userId,
-              username: req.session.username,
-              email: req.session.email
-            });
-          }
-        });
-    }
-    else {
-      res.status(404).send("Incorrect username/password");
-    }
-  },
-
+  // Not Yet Used
   findById: function (req, res) {
     // console.log(`req.session.userId: ${req.session.userId}`);
     // console.log("req.session: ", JSON.stringify(req.session));
@@ -155,6 +126,7 @@ module.exports = {
       .catch(err => res.json({isLoggedIn: false, err: err}));
   },
 
+  // Not Yet Used Or Tested - May Be Helpful
   isAdmin: function (req, res) {
     Users
       .findById(req.session.userId)
@@ -165,7 +137,7 @@ module.exports = {
         // check if active session user is an administrator
         if (dbModel.userType === "admin")
           res.json({isAdmin: true});
-        else if (dbModel.userType === "user")
+        else if (dbModel.userType === "crew")
           res.json({isAdmin: false});
         else 
           // user not of recognized type, possible db breach
@@ -174,40 +146,56 @@ module.exports = {
       .catch(err => res.json({isAdmin: false, err: err}));
   },
 
-  // Login Post Route - Uses Passport
-  login: function(req, res, next) {
-    
-    passport.authenticate('local', function(err, user, info) {
-      
-      if (err || !user){
-        console.log("Passport Validation Error: ", err);
-        res.status(404);
-        return next(err);
-      } else {
-      
-      req.logIn(user, function(err) {
-        if (err) {
-          console.log("Error 3: ", err);
-          res.status(404).send("Incorrect Password");
-          return next(err);
-        } else {
+  // Login With Sessions
+  login: function(req, res) {
 
-        req.session.userId = user._id;
-        req.session.username = user.username;
-        req.session.email = user.email;
-        
-        res.json({
-              isLoggedIn: true,
-              userId: req.session.userId,
-              username: req.session.username,
-              email: req.session.email
+    console.log("User Controller Hit");
+
+    if (req.body.email && req.body.password) {
+
+      Users
+        .findOne({email: req.body.email})
+        .exec(function (err, user) {
+          if (err) {
+            console.log(err);
+            res.status(404).send("Incorrect Username/Password");
+          } 
+          if (!user) {
+            res.status(404).send("Incorrect Username/Password");
+          } else {
+            // Run Comparision of Stored Hash vs. Login Hash
+            bcrypt.compare(req.body.password, user.password, function (err, result) {
+              if (err) {
+                console.log("Bycrypt Password Match Error: ", err);
+                res.status(404).send(err);
+              }
+
+              if (result) {
+              
+                req.session.userId = user._id;
+                req.session.email = user.email;
+                req.session.firstName = user.firstName;
+                req.session.lastName = user.lastName;
+                req.session.userType = user.userType;
+
+                res.json({
+                  firstName: req.session.firstName,
+                  lastName: req.session.lastName,
+                  userType: req.session.userType,
+                  userId: req.session.userId,
+                  email: req.session.email,
+                  isLoggedIn: true
+                });
+              }
+            })
+          }
         });
-      }
-    });
-  }
-  })(req, res, next);
-},
+    } else {
+      res.status(404).send("Incorrect username/password");
+    }
+  },
 
+  // Not Yet Used
   update: function (req, res) {
     Users
       .findOneAndUpdate({ _id: req.params.id }, req.body)
@@ -215,6 +203,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
+  // Not Yet Used
   remove: function (req, res) {
     Users
       .findById({ _id: req.params.id })
