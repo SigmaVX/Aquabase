@@ -33,6 +33,9 @@ function AuthMenu(props) {
         <li className={window.location.pathname === "/crew-portal" ? "nav-item active nav-active" : "nav-item"}>
           <Link className="nav-link" to="/crew-portal">Crew Portal</Link>
         </li>
+        <li className={window.location.pathname === "/reset" ? "nav-item active nav-active" : "nav-item"}>
+          <Link className="nav-link" to="/reset">Password Reset</Link>
+        </li>
         <li className={window.location.pathname === "/logout" ? "nav-item active nav-active" : "nav-item"}>
           <Link className="nav-link" to="/logout">Logout</Link>
         </li>

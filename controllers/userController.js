@@ -102,28 +102,27 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  // Not Yet Used
+  // Not Yet Used - Used To Check If Logged In
   findById: function (req, res) {
-    // console.log(`req.session.userId: ${req.session.userId}`);
-    // console.log("req.session: ", JSON.stringify(req.session));
     Users
       .findById(req.session.userId)
       .then(dbModel => {
-        // if user was not found send back false
+        // If user was not found return false
         if (!dbModel) return res.status(404).json({isLoggedIn: false});
-        // console.log("dbModel in findById: " + dbModel);
-
-        // means user is signed in already send back true
-        // session: req.session
+        // If found send session data
         res.json({
           isLoggedIn: true,
-          session: req.session,
           userId: req.session.userId,
-          username: req.session.username,
-          email: req.session.email
+          firstName: req.session.firstName,
+          lastName: req.session.lastName,
+          email: req.session.email,
+          userType: req.session.userType
         });
       })
-      .catch(err => res.json({isLoggedIn: false, err: err}));
+      .catch(err => {
+        console.log("findById Error: ", err);
+        res.status(500).json({isLoggedIn: false, err: err});
+      });
   },
 
   // Not Yet Used Or Tested - May Be Helpful

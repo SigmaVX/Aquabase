@@ -25,10 +25,11 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // 
-// Add Database
+// Add Database 
 // =============================================================
 const MONGODB_LOCATION = process.env.MONGODB_URI || "mongodb://localhost/aquabase";
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/aquabase");
+mongoose.connect(process.env.MONGODB_URI|| "mongodb://localhost/aquabase", { useNewUrlParser: true });
+mongoose.set('useCreateIndex', true);
 
 
 // Middleware

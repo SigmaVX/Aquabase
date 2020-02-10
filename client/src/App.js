@@ -35,6 +35,7 @@ class App extends Component {
 
   // Setting State For Login
   LoginResult = (authObj, redirPath) => {
+    console.log("Updating Parent Data");
     this.safeUpdate(authObj);
     this.redirPath = redirPath;
     console.log(authObj);
@@ -54,7 +55,7 @@ class App extends Component {
     this.redirPath = "";
 
     // Check login status if page is reloaded
-    this.isAuthenticated = this.checkAuthStatus();
+    this.checkAuthStatus();
   }
 
   componentWillUnmount() {
@@ -65,32 +66,69 @@ class App extends Component {
     if (this._isMounted) this.setState(stateObj);
   }
 
-  renderLogin = () => {
-    console.log("in renderLogin()");
-    this.safeUpdate({redirectReferrer: true});
-  }
+  // renderLogin = () => {
+  //   console.log("in renderLogin()");
+  //   this.safeUpdate({redirectReferrer: true});
+  // }
   
+
+  // was working last on this function
   checkAuthStatus() {
     AUTH
       .loginCheck()
       .then(res => {
-        console.log(res.data);
-        if (res.data.isLoggedIn) this.isAuthenticated = true;
-        this.safeUpdate({
-          isLoggedIn: res.data.isLoggedIn,
-          userId: res.data.userId,
-          email: res.data.email
-        });
+        if (res.data.isLoggedIn == true){
+          
+          if (res.data.userType == "admin"){
+            this.safeUpdate({
+              isLoggedIn: res.data.isLoggedIn,
+              userId: res.data.userId,
+              firstName: res.data.firstName,
+              lastName: res.data.lastName,
+              userType: res.data.userType,  
+              email: res.data.email,
+              isAdmin: true
+            });         
+          } else {
+            this.safeUpdate({
+              isLoggedIn: res.data.isLoggedIn,
+              userId: res.data.userId,
+              firstName: res.data.firstName,
+              lastName: res.data.lastName,
+              userType: res.data.userType,  
+              email: res.data.email,
+              isAdmin: false
+            });
+          }
+        } else {
+          this.safeUpdate({
+            isLoggedIn: false,
+            userId: "",
+            firstName: "",
+            lastName: "",
+            userType: "",  
+            email: "",
+            isAdmin: false
+          });
+        }
 
+       
         // Check if User Is Admin
-        AUTH
-        .adminCheck()
-        .then(res => {this.setState({isAdmin: res.data.isAdmin}); return ({checkLogin: this.state.isLoggedIn, checkAdmin: this.state.isAdmin});} )
-        .catch(err => {
-          // unsuccessful admin check
-          // console.log(err);
-          this.safeUpdate({isAdmin: false});  
-        })
+        // AUTH
+        // .adminCheck()
+        // .then(res => {
+        //   this.setState({isAdmin: res.data.isAdmin});
+        //   return ({
+        //       checkLogin: this.state.isLoggedIn,
+        //       checkAdmin: this.state.isAdmin
+        //     });
+        //   })
+        // .catch(err => {
+        //   // unsuccessful admin check
+        //   // console.log(err);
+        //   this.safeUpdate({isAdmin: false});  
+        // })
+
       })
       .catch(err => {
         // unsuccessful login check
@@ -185,7 +223,20 @@ class App extends Component {
                 isLoggedIn = {this.state.isLoggedIn}
                 isAdmin = {this.state.isAdmin}
                 userId = {this.state.userId}
-                username = {this.state.username}
+                firstName = {this.state.firstName}
+                lastName  = {this.state.lastName}
+                email = {this.state.email} 
+              />} 
+            /> 
+
+            <Route exact path="/reset" render={(props) => 
+              <Reset 
+                {...props}
+                isLoggedIn = {this.state.isLoggedIn}
+                isAdmin = {this.state.isAdmin}
+                userId = {this.state.userId}
+                firstName = {this.state.firstName}
+                lastName  = {this.state.lastName}
                 email = {this.state.email} 
               />} 
             /> 

@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const async = require("async");
-var mailgun = require("mailgun-js");
 const crypto = require("crypto");
 const Users = require("../../../models/Users");
 
@@ -8,7 +7,7 @@ const Users = require("../../../models/Users");
 router
   .route("/")
   .post(
-    function(req, res, next) {
+    function(req, res) {
       async.waterfall([
         function(done) {
           crypto.randomBytes(20, function(err, buf) {
@@ -18,8 +17,9 @@ router
         },
         function(token, done) {
           Users.findOne({ email: req.body.email }, function(err, user) {
+            if (err) throw err;
             if (!user) {
-              res.send('Bummer...This Email Is Not Associated With A Tilt Account');
+              res.send('This Email Is Not Associated With Your Aquabase Account');
             } else {
     
               user.resetPasswordToken = token;

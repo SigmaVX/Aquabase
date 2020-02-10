@@ -2,18 +2,19 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import AUTH from "../utilities/AUTH";
 import API from "../utilities/API";
-import {ErrorUserName, ErrorPassword, ErrorEmail, ErrorPasswordMatch} from "../components/ErrorComponents";
+import {ErrorPassword, ErrorPasswordMatch} from "../components/ErrorComponents";
 import * as VConst from "../constants/VConst";
 
 
-class Signup extends Component {
+class Reset extends Component {
   state = {
     isLoggedIn: false,
     isAdmin: false,
     success: false,
-    username: "",
     password: "",
     pswrdConfirmation: "",
+    firstName: "",
+    lastName: "",
     email: "",
     userId: "",
     errorMsg: "",
@@ -44,7 +45,7 @@ class Signup extends Component {
   }
 
   displayErrorMessage() {
-    console.log("in check error message");
+    // console.log("Checking For Error Message");
     if (this.state.errorMsg !== "") {
       return (
         <div className="alert alert-danger text-center mb-2">
@@ -64,8 +65,7 @@ class Signup extends Component {
         console.log("Reset Data: ", res.data);
         this.setState({
             userId: res.data.userId,
-            username: res.data.username,
-            email: res.data.email,
+            email: res.data.email
         })
         
         // check if user is admin
@@ -82,7 +82,6 @@ class Signup extends Component {
             isLoggedIn: true,
             isAdmin: res.data.isAdmin, 
             userId: this.state.userId,
-            username: this.state.username,
             email: this.state.email
           })
         })
@@ -190,10 +189,6 @@ class Signup extends Component {
         
           <form className="col-12 col-md-6 my-1">
             <h1 className="col-12" id="reset-text">Reset Password</h1>
-            <div className="col-12 key-icon-wrap my-1">
-              <i className="fas fa-unlock-alt"></i>
-            </div> 
-
               
             <div className="form-group">
               <input
@@ -248,4 +243,4 @@ class Signup extends Component {
 
 
 
-export default Signup;
+export default Reset;
