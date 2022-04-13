@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/SigmaVX/Aquabase#readme",
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^3.2.2",
     "axios": "^0.18.0",
     "bcrypt": "^3.0.0",
     "body-parser": "^1.18.3",
